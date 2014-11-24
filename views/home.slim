@@ -1,0 +1,11 @@
+h1 Heigh Oh
+
+#video
+
+coffee:
+  # reading
+  source = new EventSource("/stream")
+  source.onmessage = (e) ->
+    console.log e
+    $("#video").append e.data + "<br />"
+    return
