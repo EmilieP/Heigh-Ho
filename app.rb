@@ -3,8 +3,7 @@ require 'slim'
 require 'better_errors'
 require 'coffee_script'
 require './free_time'
-
-VIDEOS = ["5efO0e_ft3w", "wZZ7oFKsKzY"]
+require './video'
 
 configure :development do
   use BetterErrors::Middleware
@@ -23,6 +22,7 @@ get '/stream', provides: 'text/event-stream' do
     EventMachine::PeriodicTimer.new(3) do
       free_time = FreeTime.new
       if free_time.free?
+        video = Video.sample
         data = 'data: '
         data << "{ \"current_time\": \"#{free_time.hour}\", "
         data << "\"video\": \"#{VIDEOS.sample}\", "
