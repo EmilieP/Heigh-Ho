@@ -2,6 +2,9 @@ require 'sinatra'
 require 'slim'
 require 'better_errors'
 require 'coffee_script'
+require './free_time'
+
+VIDEOS = ["5efO0e_ft3w", "wZZ7oFKsKzY"]
 
 configure :development do
   use BetterErrors::Middleware
@@ -18,9 +21,15 @@ end
 get '/stream', provides: 'text/event-stream' do
   stream :keep_open do |out|
     EventMachine::PeriodicTimer.new(3) do
-      now = Time.now
-      if now >= Time.new(now.year, now.month, now.day, 21, 57) && now <= Time.new(Time.now.year, Time.now.month, Time.now.day, 21, 58)
-        out << "data: #{Time.now}\n\n"
+      time = FreeTime.new
+      if time.free_time?
+        data = 'data: '
+        data << "{ \"current_time\": \"#{time.hour}\", "
+        data << "\"video\": \"#{VIDEOS.sample}\", "
+        data << "\"next_time\": \"#{time.next_free_time}\""
+        data << " }"
+        data << "\n\n"
+        out << data
       end
     end
   end
