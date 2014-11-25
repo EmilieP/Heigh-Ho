@@ -21,16 +21,23 @@ end
 get '/stream', provides: 'text/event-stream' do
   stream :keep_open do |out|
     EventMachine::PeriodicTimer.new(3) do
-      time = FreeTime.new
-      if time.free_time?
+      free_time = FreeTime.new
+      if free_time.free?
         data = 'data: '
-        data << "{ \"current_time\": \"#{time.hour}\", "
+        data << "{ \"current_time\": \"#{free_time.hour}\", "
         data << "\"video\": \"#{VIDEOS.sample}\", "
-        data << "\"next_time\": \"#{time.next_free_time}\""
+        data << "\"next_time\": \"#{free_time.next_time}\""
         data << " }"
         data << "\n\n"
-        out << data
+      else
+        data = 'data: '
+        data << "{ \"current_time\": \"#{free_time.hour}\", "
+        data << "\"video\": \"\", "
+        data << "\"next_time\": \"#{free_time.next_time}\""
+        data << " }"
+        data << "\n\n"
       end
+      out << data
     end
   end
 end

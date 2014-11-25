@@ -2,7 +2,7 @@ class FreeTime
 
   FREETIME = {
     1 => '18:30:00',
-    2 => '12:30:00',
+    2 => '18:30:00',
     3 => '18:30:00',
     4 => '18:30:00',
     5 => '17:30:00',
@@ -16,7 +16,7 @@ class FreeTime
     @time = time
   end
 
-  def free_time?
+  def free?
     week_end? || free_hour?
   end
 
@@ -24,7 +24,7 @@ class FreeTime
     @hour ||= time.strftime('%H:%M:%S')
   end
 
-  def next_free_time
+  def next_time
     FREETIME[week_day.to_i]
   end
 
