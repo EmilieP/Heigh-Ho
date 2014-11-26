@@ -5,7 +5,7 @@ p#time
 #video
 
 coffee:
-  source = new EventSource("/stream");
+  source = new EventSource('/stream');
 
   source.onmessage = (e) ->
     console.log e

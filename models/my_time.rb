@@ -1,11 +1,5 @@
 class MyTime
 
-  def working?
-    hash = WORKING_HOURS[week_day]
-    return false if hash[:begin].nil? && hash[:end].nil?
-    hour_to_s >= hash[:begin] && hour_to_s <= hash[:end]
-  end
-
   def next_time
     'nope'
   end
@@ -20,16 +14,21 @@ class MyTime
     @hour_to_s ||= time.strftime('%H:%M:%S')
   end
 
+  def working?
+    return false if working_hours.begin.nil? && working_hours.end.nil?
+    hour_to_s >= working_hours.begin && hour_to_s <= working_hours.end
+  end
+
   def free?
-    true
+    !working?
+  end
+
+  def working_hours
+    @working_hours ||= OpenStruct.new(WORKING_HOURS[week_day])
   end
 
   def week_day
     @week_day ||= time.strftime('%u').to_i
-  end
-
-  def week_end?
-    week_day == 6 || week_day == 7
   end
 
 end
