@@ -8,6 +8,8 @@ coffee:
   source = new EventSource("/stream");
 
   source.onmessage = (e) ->
+    console.log e
+
     data = JSON.parse(e.data)
     $("#time").text "Il est #{data.current_time}"
 

@@ -2,8 +2,8 @@ require 'sinatra'
 require 'slim'
 require 'better_errors'
 require 'coffee_script'
-require './free_time'
-require './video'
+
+Dir["./models/**/*.rb"].each { |model| require model }
 
 configure :development do
   use BetterErrors::Middleware
@@ -20,24 +20,13 @@ end
 get '/stream', provides: 'text/event-stream' do
   stream :keep_open do |out|
     EventMachine::PeriodicTimer.new(3) do
-      free_time = FreeTime.new
-      if free_time.free?
-        video = Video.sample
-        data = 'data: '
-        data << "{ \"current_time\": \"#{free_time.hour}\", "
-        data << "\"video\": \"#{VIDEOS.sample}\", "
-        data << "\"next_time\": \"#{free_time.next_time}\""
-        data << " }"
-        data << "\n\n"
+      time = MyTime.new
+      if time.free?
+        @video ||= Video.sample.id
       else
-        data = 'data: '
-        data << "{ \"current_time\": \"#{free_time.hour}\", "
-        data << "\"video\": \"\", "
-        data << "\"next_time\": \"#{free_time.next_time}\""
-        data << " }"
-        data << "\n\n"
+        @video = nil
       end
-      out << data
+      out << EventData.build({ current_time: time.hour_to_s, video: @video, next_time: 'nope' })
     end
   end
 end
