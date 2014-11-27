@@ -4,6 +4,10 @@ class MyTime
     'nope'
   end
 
+  def remaining_time
+    '3:00:00'
+  end
+
   attr_accessor :time
 
   def initialize(time=Time.now)

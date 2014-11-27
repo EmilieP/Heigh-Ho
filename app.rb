@@ -26,7 +26,7 @@ get '/stream', provides: 'text/event-stream' do
         settings.video_id = nil
       end
 
-      out << EventData.build({ current_time: time.hour_to_s, video: settings.video_id, next_time: 'nope' })
+      out << EventData.build({ current_time: time.hour_to_s, video: settings.video_id, next_time: 'nope', remaining_time: time.remaining_time })
     end
   end
 end

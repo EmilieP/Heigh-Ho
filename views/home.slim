@@ -1,23 +1,60 @@
 h1 Heigh Oh
 
-p#time
+p id="current-time"
 
-#video
+div id="video"
+
+p id="remaining-time"
+
+scss:
+  #current-time {
+    color:       red;
+    font-weight: bold;
+    text-align:  center;
+  }
+
+  #remaining-time {
+    color:       blue;
+    font-weight: bold;
+    text-align:  center;
+  }
 
 coffee:
-  source = new EventSource('/stream');
+
+  addVideo = (videoId) ->
+    $('#video').append "<iframe width=\"420\" height=\"315\" src=\"//www.youtube.com/embed/#{videoId}?rel=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"
+
+  canLoadVideo = (video) ->
+    video && $('iframe').length == 0
+
+  cleanRemainingTime = () ->
+    $('#remaining-time').text ''
+
+  cleanVideo = () ->
+    $('#video').text ''
+
+  displayCurrentTime = (time) ->
+    $('#current-time').text "Il est #{time}"
+
+  displayRemainingTime = (time) ->
+    $('#remaining-time').text "Il reste #{time}"
+
+  videoIsPresent = () ->
+    $('iframe').length > 0
+
+
+  source = new EventSource('/stream')
 
   source.onmessage = (e) ->
-    console.log e
-
     data = JSON.parse(e.data)
-    $("#time").text "Il est #{data.current_time}"
 
-    if data.video && $("iframe").length == 0
-      $("#video").append "<iframe width=\"420\" height=\"315\" src=\"//www.youtube.com/embed/#{data.video}?rel=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"
-    else if data.video
-      return
+    displayCurrentTime(data.current_time)
+
+    return if videoIsPresent()
+
+    if canLoadVideo(data.video)
+      addVideo(data.video)
+      cleanRemaningTime()
     else
-      $("#video").text "Come back at #{data.next_time}"
-
-    return
+      cleanVideo()
+      displayRemainingTime(data.remaining_time)
