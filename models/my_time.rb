@@ -1,11 +1,11 @@
 class MyTime
 
   def next_time
-    'nope'
+    working_hours.end
   end
 
   def remaining_time
-    '3:00:00'
+    Time.at(Time.parse(next_time) - Time.parse(hour_to_s)).strftime('%H:%M:%S')
   end
 
   attr_accessor :time

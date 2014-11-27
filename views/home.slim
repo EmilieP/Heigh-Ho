@@ -37,7 +37,7 @@ coffee:
     $('#current-time').text "Il est #{time}"
 
   displayRemainingTime = (time) ->
-    $('#remaining-time').text "Il reste #{time}"
+    $('#remaining-time').text "#{time} avant la prochaine vidéo."
 
   videoIsPresent = () ->
     $('iframe').length > 0
