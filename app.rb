@@ -3,6 +3,12 @@ configure :development do
   BetterErrors.application_root = __dir__
 end
 
+helpers do
+  def video_tag(video_id)
+    "<iframe width=\"420\" height=\"315\" src=\"//www.youtube.com/embed/#{video_id}?rel=0&autoplay=1\" frameborder=\"0\" allowfullscreen></iframe>"
+  end
+end
+
 set :server, :thin
 set :video_id, nil
 
