@@ -17,7 +17,7 @@ class Video
     { id: 'OWFBqiUgspg', name: 'Amazing horse'                  },
     { id: 'QH2-TGUlwu4', name: 'Nyan Cat'                       },
     { id: 'W3TtS1wkb7M', name: 'Narwhals'                       },
-    { id: 'X18mUlDddCc', name: "Ain't nobody got time for that" },
+    { id: 'X18mUlDddCc', name: "Ain't nobody got time for that" }
   ].freeze
 
   def self.rick_roll

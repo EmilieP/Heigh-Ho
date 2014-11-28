@@ -5,5 +5,5 @@ WORKING_HOURS = {
   4 => { begin: '09:00:00', end: '18:30:00' },
   5 => { begin: '09:00:00', end: '17:30:00' },
   6 => { begin: nil,        end: nil        },
-  7 => { begin: nil,        end: nil        },
+  7 => { begin: nil,        end: nil        }
 }.freeze

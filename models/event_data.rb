@@ -7,7 +7,7 @@ class EventData
 
   def initialize(params)
     @params = params
-    @data   = String.new
+    @data   = ''
   end
 
   def build
